@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+	<!--boostrap 4-->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <!--bootstrap jquery-->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+     <!--font awesome 5-->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<link rel="stylesheet" href="{{asset('css/app.css')}}">
+	<title>note master</title>
+</head>
+<body>
+<div id="app">
+	<div class="container">
+		<h4 class="text-center">Note Master</h4>
+		<div class="col-md-8  mx-auto">
+	<div class="card">
+		<div class="card-header">
+			<h2 class="text-center">Add your note</h2>
+		</div>
+	<form  @submit.prevent="addNote" class="col-md-8">
+		<div class="form-group" >
+			<label>title:</label>
+			<input type="text" placeholder="add title" class="form-control" v-model="note.title">
+		</div>
+		<div class="form-group">
+			<label>text:</label>
+			<textarea class="form-control" placeholder="add text" v-model="note.text"></textarea>
+		</div>
+		<input type="submit" value="add note" class="btn btn-primary" :disabled="!check()">
+	</form>
+</div>
+</div>
+	<div class="row">
+	<div class="col-md-4 note" v-for="note in notes">
+		<div class="card" id="card">
+			<h3 class="card-title">{{note.title}}</h3>
+			<p>{{note.date}}</p>
+			<div>{{ note.text }}</div>
+			<span @click="removeNote(note)">&times;</span>
+		
+	</div>
+	</div>
+</div>
+</div>
+</div>
+<script>
+	Vue.config.devtools = true;
+var app = new Vue({
+		el:"#app",
+		data:{
+          note:{
+          	title:'',
+          	text:''
+          },
+		 notes:[
+		 {
+		 	title: "read book one",
+		 	text:"the book is very important",
+		 	date:new Date(Date.now()).toDateString()
+		 	
+		 }
+		 ]
+		},
+		methods:{
+			addNote(){
+	    let {title , text} = this.note
+        this.notes.push({
+        	title,
+        	text,
+          date:new Date(Date.now()).toDateString()
+        	
+        });
+			
+        },
+        removeNote(note){
+        	let notes = this.notes;
+        	notes.splice(this.notes.indexOf(note),1);
+        },
+       check(){
+        	return this.note.title && this.note.text;
+        }
+		}
+	});
+</script>
+<style>
+	h4{
+		font-style: italic;
+		font-size: 2.3rem;
+		font-weight: bold;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		color: #767c77;
+	}
+	.card{
+		margin-top: 20px:
+		margin-bottom:20px !important; 
+	}
+	.card-header{
+	   background: #fabea7;
+	   margin-bottom: 20px;
+	}
+	.card-header h2{
+		color: #767c77;
+		font-style: italic;
+	}
+	label{
+	color: #767c77;
+	font-size: 1rem;
+	font-style: italic;
+	font-weight: bold;
+	}
+	input[type=submit]{
+		background-color: #fabea7 !important;
+		outline: none;
+		border: none;
+		border-radius: 14px;
+		margin-bottom: 20px;
+		color:#767c77 !important;
+		font-size: 1rem;
+		font-weight: bold;
+		font-style: italic;
+	}
+	#card{
+		margin-top: 20px;
+		background-color: #fabea7;
+		opacity: .8;
+		border-radius:  10px;
+		font-style: italic;
+	}
+	#card h3{
+		font-size: 1.5rem;
+		font-style: italic;
+		font-weight: bold;
+		text-align: center;
+		margin-top: 4px;
+		margin-bottom: 5px;
+		color:#767c77;
+		font-style: italic;
+		opacity: 1.4
+	}
+	#card p{
+		font-size: small;
+		color:#666;
+		text-align: center;
+		font-style: italic;
+	}
+	#card div{
+		color: #333;
+		padding-left: 3px;
+		font-style: italic;
+	}
+	#card span{
+		position: absolute;
+		font-size: 2rem;
+		color: #767c77;
+		right:10px;
+		top: 0px;
+		cursor: pointer;
+	}
+</style>
+</body>
+</html>
